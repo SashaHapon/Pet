@@ -7,9 +7,6 @@ spring:
     config:
       server:
         git:
-          uri:
-          username:
-          password:
-          default-label:
-          search-paths:
-            - "{application}"
+          uri: git@github.com:SashaHapon/Pet.git
+          private-key: file:~/.ssh/id_rsa
+          search-paths: config
