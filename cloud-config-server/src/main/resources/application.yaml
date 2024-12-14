@@ -7,6 +7,7 @@ spring:
     config:
       server:
         git:
-          uri: git@github.com:SashaHapon/Pet.git
-          private-key: file:~/.ssh/id_rsa
-          search-paths: config
+          uri: https://github.com/SashaHapon/Pet.git
+          username: full8back@gmail.com
+          password: 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
+          search-paths: consumer-config
