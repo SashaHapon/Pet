@@ -8,8 +8,12 @@ spring:
       server:
         git:
           default-label: main
+          clone-on-start: true
           uri: https://github.com/SashaHapon/Pet.git
           username: full8back@gmail.com
           password: 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
+          force-pull: true
+          basedir:
+            - /cloud-config-server/src/main/resources/cloud/configs
           search-paths:
-            - consumer-config
+            - cloud-config-repository
