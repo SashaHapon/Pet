@@ -7,7 +7,9 @@ spring:
     config:
       server:
         git:
+          default-label: main
           uri: https://github.com/SashaHapon/Pet.git
           username: full8back@gmail.com
           password: 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
-          search-paths: consumer-config
+          search-paths:
+            - consumer-config
