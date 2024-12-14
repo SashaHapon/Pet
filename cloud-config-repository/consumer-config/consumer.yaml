@@ -1,2 +1,6 @@
 саша:
   гапон: евгеньевич
+
+spring:
+  application:
+    name: configurationOfConsumer
