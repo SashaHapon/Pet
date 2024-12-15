@@ -8,5 +8,5 @@ RUN mvn clean package -DskipTests
 FROM eclipse-temurin:17-jre-alpine
 WORKDIR /app
 EXPOSE 8888
-COPY --from=bielder /app/target/cloud-config-server-1.0.jar cloud-config-server.jar
+COPY --from=builder /app/target/cloud-config-server-1.0.jar cloud-config-server.jar
 ENTRYPOINT ["java", "-jar", "/app/cloud-config-server.jar"]

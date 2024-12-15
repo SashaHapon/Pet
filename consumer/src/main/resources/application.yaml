@@ -17,8 +17,8 @@ spring:
   config:
     activate:
       on-profile:
-        - consumer
-    import: optional:configserver:http://localhost:8888
+        - consumer-config
+    import: "optional:configserver:"
   cloud:
     config:
       fail-fast: true
