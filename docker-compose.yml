@@ -8,6 +8,7 @@ services:
       context: /consumer
       dockerfile: Dockerfile
     depends_on:
+      - cloud-config
       - kafka
       - zookeeper
     networks:
@@ -27,6 +28,14 @@ services:
       - common-network
     ports:
       - 8081:8081
+  cloud-config:
+    build:
+      context: /cloud-config-server
+      dockerfile: Dockerfile
+    networks:
+      - common-network
+    ports:
+      - 8888:8888
 
   zookeeper:
     image: confluentinc/cp-zookeeper:latest
