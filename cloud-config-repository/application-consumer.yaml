@@ -9,7 +9,7 @@ spring:
         spring:
           json:
             type:
-              mapping: producer:org.taskmngr.dto.MassageDtorationOfConsumer
+              mapping: producer:org.taskmngr.dto.MassageDto
 consumer:
   kafka:
     id:
