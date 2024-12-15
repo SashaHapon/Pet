@@ -32,6 +32,8 @@ services:
     build:
       context: /cloud-config-server
       dockerfile: Dockerfile
+    depends_on:
+      - producer
     networks:
       - common-network
     ports:
