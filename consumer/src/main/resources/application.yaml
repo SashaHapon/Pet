@@ -1,6 +1,13 @@
 spring:
   application:
     name: consumer
+  config:
+    import: "optional:configserver:"
+  cloud:
+    config:
+      uri: http://cloud-config:8888
+      fail-fast: true
+
 #  kafka:
 #    bootstrap-servers: ${KAFKA_HOST:localhost}:29092
 #    consumer:
@@ -12,16 +19,7 @@ spring:
 #          json:
 #            type:
 #              mapping: producer:org.taskmngr.dto.MassageDto
----
-spring:
-  config:
-    activate:
-      on-profile:
-        - consumer-config
-    import: "optional:configserver:"
-  cloud:
-    config:
-      fail-fast: true
+
 
 #    producer:
 #      key-serializer: org.apache.kafka.common.serialization.IntegerSerializer
