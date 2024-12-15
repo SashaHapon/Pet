@@ -1,8 +1,12 @@
 spring:
   application:
     name: consumer
+  profiles:
+    active: consumer
   config:
-    import: "optional:configserver:"
+    import: configserver:http://cloud-config:8888
+#  config:
+#    import: "optional:configserver:"
   cloud:
     config:
       uri: http://cloud-config:8888
