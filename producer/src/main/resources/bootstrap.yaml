@@ -1,0 +1,14 @@
+spring:
+  application:
+    name: producer
+  profiles:
+    active: producer
+
+
+producer:
+  kafka:
+    id:
+      topic: 34
+    topic:
+      in: topic-message
+      out: order-message
