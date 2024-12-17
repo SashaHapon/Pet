@@ -1,0 +1,20 @@
+spring:
+  kafka:
+    bootstrap-servers: kafka:29092
+    producer:
+      group-id: producer
+      key-serializer: org.apache.kafka.common.serialization.IntegerSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      properties:
+        spring:
+          json:
+            type:
+              mapping: producer:org.taskmngr.dto.MassageDto
+
+producer:
+  kafka:
+    id:
+      topic: 34
+    topic:
+      in: topic-message
+      out: order-message

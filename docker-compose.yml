@@ -5,7 +5,7 @@ services:
     environment:
       - "KAFKA_HOST=kafka"
     build:
-      context: /consumer
+      context: consumer
       dockerfile: Dockerfile
     depends_on:
       - cloud-config
@@ -19,7 +19,7 @@ services:
     environment:
       - "KAFKA_HOST=kafka"
     build:
-      context: /producer
+      context: producer
       dockerfile: Dockerfile
     depends_on:
       - kafka
@@ -30,7 +30,7 @@ services:
       - 8081:8081
   cloud-config:
     build:
-      context: /cloud-config-server
+      context: cloud-config-server
       dockerfile: Dockerfile
     depends_on:
       - producer

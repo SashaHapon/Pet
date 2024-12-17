@@ -1,0 +1,12 @@
+spring:
+  application:
+    name: producer
+  profiles:
+    active: producer
+  cloud:
+    config:
+      uri: http://cloud-config:8888
+      fail-fast: true
+      enabled: true
+      retry:
+        max-attempts: 20
