@@ -3,12 +3,10 @@ spring:
     name: producer
   profiles:
     active: producer
-
-
-producer:
-  kafka:
-    id:
-      topic: 34
-    topic:
-      in: topic-message
-      out: order-message
+  cloud:
+    config:
+      uri: http://cloud-config:8888
+      fail-fast: true
+      enabled: true
+      retry:
+        max-attempts: 20
