@@ -11,6 +11,7 @@ services:
       - cloud-config
       - kafka
       - zookeeper
+      - postgres
     networks:
       - common-network
     ports:
@@ -65,6 +66,23 @@ services:
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT
       KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+
+  postgres:
+      image: postgres:latest
+      restart: always
+      environment:
+        - POSTGRES_PASSWORD=postgres
+        - POSTGRES_USER=postgres
+        - POSTGRES_DB=consumer_db
+      ports:
+        - 5432:5432
+      networks:
+        - common-network
+      volumes:
+        - postgres:/var/lib/postgresql/data
+
+volumes:
+  postgres:
 
 networks:
   common-network:

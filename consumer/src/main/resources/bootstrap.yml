@@ -10,8 +10,3 @@ spring:
       enabled: true
       retry:
         max-attempts: 20
-  datasource:
-    driver-class-name:
-    url: jdbc:postgresql://localhost:5432/testdb
-    username: postgres
-    password: postgres
