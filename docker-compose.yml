@@ -7,8 +7,8 @@ services:
     build:
       context: consumer
       dockerfile: Dockerfile
-#    depends_on:
-#      - postgres
+    depends_on:
+      - producer
     networks:
       - common-network
     ports:
@@ -19,10 +19,8 @@ services:
     build:
       context: producer
       dockerfile: Dockerfile
-#    depends_on:
-#      - kafka
-#      - zookeeper
-#      - cloud-config
+    depends_on:
+      - auth-service
     networks:
       - common-network
     ports:
@@ -31,6 +29,8 @@ services:
     build:
       context: cloud-config-server
       dockerfile: Dockerfile
+    depends_on:
+      - kafka
     networks:
       - common-network
     ports:
@@ -66,6 +66,8 @@ services:
   postgres:
       image: postgres:latest
       restart: always
+      depends_on:
+        - cloud-config
       environment:
         - POSTGRES_PASSWORD=postgres
         - POSTGRES_USER=postgres
@@ -87,8 +89,10 @@ services:
       KC_DB_URL: "jdbc:postgresql://auth-db:5432/keycloak"
       KC_BOOTSTRAP_ADMIN_USERNAME: admin
       KC_BOOTSTRAP_ADMIN_PASSWORD: admin
+      KC_LOG_LEVEL: DEBUG
+      KC_LOG_CONSOLE_COLOR: true
     ports:
-      - 8888:8080
+      - 8080:8080
     depends_on:
       - auth-db
     command:
@@ -98,6 +102,8 @@ services:
   auth-db:
     container_name: auth-db
     image: postgres:16-alpine
+    depends_on:
+      - postgres
     volumes:
       - data_postgres_auth:/var/lib/postgres/auth
     environment:
@@ -110,38 +116,8 @@ services:
       - common-network
     restart: unless-stopped
 
-
-  keycloak:
-    image: quay.io/keycloak/keycloak:23.0.4
-    command: start-dev
-    ports:
-      - 8090:8080
-    environment:
-      - KEYCLOAK_ADMIN=admin
-      - KEYCLOAK_ADMIN_PASSWORD=admin
-      - KC_DB=postgres
-      - KC_DB_URL=jdbc:postgresql://postgres_db:5433/keycloak
-      - KC_DB_USERNAME=keycloak
-      - KC_DB_PASSWORD=keycloak
-    depends_on:
-      - postgres_db
-    volumes:
-      - keycloak:/var/lib/keycloak/data
-  postgres_db:
-    image: postgres:15
-    ports:
-      - 5433:5432
-    environment:
-      POSTGRES_USER: keycloak
-      POSTGRES_PASSWORD: keycloak
-      POSTGRES_DB: keycloak
-    volumes:
-      - postgres_db:/var/lib/postgresql_keycloak/data
-
 volumes:
   postgres:
-  keycloak:
-  postgres_db:
   data_postgres_auth:
 
 networks:
