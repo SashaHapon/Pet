@@ -17,7 +17,7 @@ spring:
       ddl-auto: update
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://postgres:5342/consumer_db
+    url: jdbc:postgresql://postgres:5432/consumer_db
     username: postgres
     password: postgres
 consumer:
