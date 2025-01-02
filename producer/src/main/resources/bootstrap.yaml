@@ -10,3 +10,18 @@ spring:
       enabled: true
       retry:
         max-attempts: 20
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8080/realms/SuperAppRealm
+          jwk-set-uri: ${spring.security.oauth2.resourceserver.jwt.issuer-uri}/protocol/openid-connect/certs
+jwt:
+  auth:
+    converter:
+      resource-id: producer-client
+      principal-attribute: principal-username
+
+logging:
+  level:
+    web: debug

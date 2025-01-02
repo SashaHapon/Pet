@@ -13,10 +13,11 @@ spring:
   jpa:
     show-sql: true
     hibernate:
+      dialect: PostgreSQLDialect
       ddl-auto: update
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://postgres:5432/consumer_db
+    url: jdbc:postgresql://postgres:5442/consumer_db
     username: postgres
     password: postgres
 consumer:
