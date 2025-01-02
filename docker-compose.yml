@@ -73,7 +73,7 @@ services:
         - POSTGRES_USER=postgres
         - POSTGRES_DB=consumer_db
       ports:
-        - 5442:5432
+        - 5432:5432
       networks:
         - common-network
       volumes:
