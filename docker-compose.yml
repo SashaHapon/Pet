@@ -9,6 +9,7 @@ services:
       dockerfile: Dockerfile
     depends_on:
       - producer
+    restart: unless-stopped
     networks:
       - common-network
     ports:
@@ -21,6 +22,7 @@ services:
       dockerfile: Dockerfile
     depends_on:
       - cloud-config
+    restart: unless-stopped
     networks:
       - common-network
     ports:
@@ -28,13 +30,24 @@ services:
   cloud-config:
     build:
       context: cloud-config-server
-      dockerfile: Dockerfile
+      dockerfile: cloud-config-server/Dockerfile
     depends_on:
       - kafka
     networks:
       - common-network
     ports:
       - 8888:8888
+
+  gateway:
+    build:
+      context: gateway
+      dockerfile: Dockerfile
+#    depends_on:
+#      - kafka
+    networks:
+      - common-network
+    ports:
+      - 8070:8080
 
   zookeeper:
     image: confluentinc/cp-zookeeper:latest
@@ -79,26 +92,25 @@ services:
       volumes:
         - postgres:/var/lib/postgresql/data
 
-#  auth-service:
-#    container_name: auth-service
-#    image: keycloak/keycloak:26.0.5
-#    environment:
+  keycloak:
+    image: quay.io/keycloak/keycloak:23.0.7
+    environment:
 #      KC_DB: postgres
 #      KC_DB_USER: keycloak
 #      KC_DB_PASSWORD: keycloak
 #      KC_DB_URL: "jdbc:postgresql://auth-db:5432/keycloak"
 #      KC_BOOTSTRAP_ADMIN_USERNAME: admin
 #      KC_BOOTSTRAP_ADMIN_PASSWORD: admin
-#      KC_LOG_LEVEL: DEBUG
-#      KC_LOG_CONSOLE_COLOR: true
-#    ports:
-#      - 8080:8080
-#    depends_on:
-#      - auth-db
-#    command:
-#      - "start-dev"
-#    networks:
-#      - common-network
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
+      KC_LOG_LEVEL: DEBUG
+      KC_LOG_CONSOLE_COLOR: true
+    ports:
+      - 8085:8080
+    command:
+      - "start-dev"
+    networks:
+      - common-network
 #  auth-db:
 #    container_name: auth-db
 #    image: postgres:16-alpine

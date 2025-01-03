@@ -5,14 +5,16 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.reactive.function.client.WebClient;
 import org.taskmngr.service.KafkaSenderService;
 
 @RestController
 @RequiredArgsConstructor
 public class KafkaController {
+
     private final KafkaSenderService kafka;
 
-    @PreAuthorize(value = "")
+    @PreAuthorize("hasAuthority('SCOPE_TEST')")
     @PostMapping("/post/{massage}")
     public void send(@PathVariable String massage){
         kafka.sendToTopic(massage);

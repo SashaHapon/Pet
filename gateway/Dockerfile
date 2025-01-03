@@ -8,5 +8,5 @@ RUN mvn clean package -DskipTests
 FROM eclipse-temurin:17-jre-alpine
 WORKDIR /app
 EXPOSE 8080
-COPY --from=builder /app/target/consumer-1.0.jar consumer.jar
-ENTRYPOINT ["java", "-jar", "/app/consumer.jar"]
+COPY --from=builder /app/target/gateway-1.0.jar gateway.jar
+ENTRYPOINT ["java", "-jar", "/app/gateway.jar"]
