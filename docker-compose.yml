@@ -38,17 +38,6 @@ services:
     ports:
       - 8888:8888
 
-  gateway:
-    build:
-      context: gateway
-      dockerfile: Dockerfile
-#    depends_on:
-#      - kafka
-    networks:
-      - common-network
-    ports:
-      - 8070:8080
-
   zookeeper:
     image: confluentinc/cp-zookeeper:latest
     environment:
@@ -92,45 +81,60 @@ services:
       volumes:
         - postgres:/var/lib/postgresql/data
 
-  keycloak:
-    image: quay.io/keycloak/keycloak:23.0.7
+  db:
+    image: postgres:13.5
     environment:
-#      KC_DB: postgres
-#      KC_DB_USER: keycloak
-#      KC_DB_PASSWORD: keycloak
-#      KC_DB_URL: "jdbc:postgresql://auth-db:5432/keycloak"
-#      KC_BOOTSTRAP_ADMIN_USERNAME: admin
-#      KC_BOOTSTRAP_ADMIN_PASSWORD: admin
-      KEYCLOAK_ADMIN: admin
-      KEYCLOAK_ADMIN_PASSWORD: admin
-      KC_LOG_LEVEL: DEBUG
-      KC_LOG_CONSOLE_COLOR: true
+      POSTGRES_HOST_AUTH_METHOD: trust
+      POSTGRES_USER: my_admin
+      POSTGRES_PASSWORD: my_password
+      POSTGRES_DB: keycloak_db
     ports:
-      - 8085:8080
-    command:
-      - "start-dev"
+      - 5432:5432
     networks:
       - common-network
-#  auth-db:
-#    container_name: auth-db
-#    image: postgres:16-alpine
-#    depends_on:
-#      - postgres
-#    volumes:
-#      - data_postgres_auth:/var/lib/postgres/auth
-#    environment:
-#      POSTGRES_PASSWORD: keycloak
-#      POSTGRES_USER: keycloak
-#      POSTGRES_DB: keycloak
-#    ports:
-#      - 5432:5432
-#    networks:
-#      - common-network
-#    restart: unless-stopped
+  kc:
+    image: quay.io/keycloak/keycloak:legacy
+    environment:
+      DB_VENDOR: POSTGRES
+      DB_ADDR: db
+      DB_DATABASE: keycloak_db
+      DB_USER: my_admin
+      DB_SCHEMA: public
+      DB_PASSWORD: my_password
+      KEYCLOAK_HOSTNAME: backend-keycloak-auth
+      KEYCLOAK_USER: admin
+      KEYCLOAK_PASSWORD: admin
+    ports:
+      - 8080:8080
+    depends_on:
+      - db
+    networks:
+      - common-network
+  backend-gateway-client:
+    build:
+      context: backend-gateway-client
+      dockerfile: Dockerfile
+    ports:
+      - 8083:8083
+    extra_hosts:
+      - "backend-keycloak-auth:host-gateway"
+      - "backend-resources:host-gateway"
+    networks:
+      - common-network
+  backend-resources:
+    build:
+      context: backend-resources
+      dockerfile: Dockerfile
+    ports:
+      - 8082:8082
+    extra_hosts:
+      - "backend-keycloak-auth:host-gateway"
+      - "backend-gateway-client:host-gateway"
+    networks:
+      - common-network
 
 volumes:
   postgres:
-#  data_postgres_auth:
 
 networks:
   common-network:

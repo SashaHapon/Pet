@@ -13,7 +13,8 @@
         <module>producer</module>
         <module>cloud-config-server</module>
         <module>cloud-config-repository</module>
-        <module>gateway</module>
+        <module>backend-gateway-client</module>
+        <module>backend-resources</module>
     </modules>
 
     <properties>
