@@ -10,16 +10,16 @@ spring:
           json:
             type:
               mapping: producer:org.taskmngr.dto.MassageDto
-  jpa:
-    show-sql: true
-    database-platform: org.hibernate.dialect.PostgreSQLDialect
-    hibernate:
-      ddl-auto: update
-  datasource:
-    driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://postgres:5432/consumer_db
-    username: postgres
-    password: postgres
+#  jpa:
+#    show-sql: true
+#    database-platform: org.hibernate.dialect.PostgreSQLDialect
+#    hibernate:
+#      ddl-auto: update
+#  datasource:
+#    driver-class-name: org.postgresql.Driver
+#    url: jdbc:postgresql://postgres:5432/consumer_db
+#    username: postgres
+#    password: postgres
 consumer:
   kafka:
     id:
