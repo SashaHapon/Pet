@@ -13,7 +13,7 @@ services:
     networks:
       - common-network
     ports:
-      - 8080:8080
+      - 8085:8085
   producer:
     environment:
       - "KAFKA_HOST=kafka"
@@ -27,6 +27,9 @@ services:
       - common-network
     ports:
       - 8081:8081
+    extra_hosts:
+      - "backend-keycloak-auth:host-gateway"
+      - "backend-gateway-client:host-gateway"
   cloud-config:
     build:
       context: cloud-config-server
@@ -104,6 +107,10 @@ services:
       KEYCLOAK_HOSTNAME: backend-keycloak-auth
       KEYCLOAK_USER: admin
       KEYCLOAK_PASSWORD: admin
+      KC_LOG_LEVEL: debug
+      KC_LOG_CONSOLE_COLOR: true
+      KC_LOG_CONSOLE_FORMAT: DEFAULT
+      KC_LOG_CONSOLE_OUTPUT: stdout
     ports:
       - 8080:8080
     depends_on:

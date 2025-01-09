@@ -14,7 +14,7 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          jwk-set-uri: http://keycloak:8085/realms/demo/protocol/openid-connect/certs
+          issuer-uri: http://backend-keycloak-auth:8080/auth/realms/my_realm
 
 logging.level:
   org.springframework.cloud.gateway: DEBUG

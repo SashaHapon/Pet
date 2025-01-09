@@ -2,3 +2,5 @@
 /consumer/target/**
 /producer/target/**
 **.iml
+/backend-gateway-client/target/classes/application.yml
+/backend-resources/target/classes/application.yml

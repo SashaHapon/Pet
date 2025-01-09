@@ -12,6 +12,12 @@ spring:
             Path=/messages/**
           filters:
             TokenRelay=
+        - id: producer
+          uri: http://producer:8085/
+          predicates:
+            Path=/post/**
+          filters:
+            TokenRelay=
   security:
     oauth2:
       client:
@@ -19,10 +25,17 @@ spring:
           gateway:
             provider: my-provider
             client-id: my_client
-            client-secret: XEsaLrrygYLaaAOd7LjiY2GkhI7Ll7sS
+            client-secret: g05dxMh7hGHwzny9hi0dScuM3hCKWgVZ
             authorization-grant-type: authorization_code
             redirect-uri: "http://backend-gateway-client:8083/login/oauth2/code/{registrationId}"
             scope: openid, message.read
         provider:
           my-provider:
             issuer-uri: http://backend-keycloak-auth:8080/auth/realms/my_realm
+
+logging:
+  level:
+    org:
+      springframework:
+        security:
+          oauth2: DEBUG
