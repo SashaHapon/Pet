@@ -3,7 +3,7 @@ version: '4'
 services:
   consumer:
     environment:
-      - "KAFKA_HOST=kafka"
+      KAFKA_HOST: ${KAFKA_HOST}
     build:
       context: consumer
       dockerfile: Dockerfile
@@ -13,10 +13,10 @@ services:
     networks:
       - common-network
     ports:
-      - 8085:8085
+      - ${CONSUMER_PORT}:${CONSUMER_PORT}
   producer:
     environment:
-      - "KAFKA_HOST=kafka"
+      KAFKA_HOST: ${KAFKA_HOST}
     build:
       context: producer
       dockerfile: Dockerfile
@@ -26,7 +26,7 @@ services:
     networks:
       - common-network
     ports:
-      - 8081:8081
+      - ${PRODUCER_PORT}:${PRODUCER_PORT}
     extra_hosts:
       - "backend-keycloak-auth:host-gateway"
       - "backend-gateway-client:host-gateway"
@@ -39,15 +39,15 @@ services:
     networks:
       - common-network
     ports:
-      - 8888:8888
+      - ${CLOUD_CONFIG_PORT}:${CLOUD_CONFIG_PORT}
 
   zookeeper:
     image: confluentinc/cp-zookeeper:latest
     environment:
-      ZOOKEEPER_CLIENT_PORT: 2181
-      ZOOKEEPER_TICK_TIME: 2000
+      ZOOKEEPER_CLIENT_PORT: ${ZOOKEEPER_CLIENT_PORT}
+      ZOOKEEPER_TICK_TIME: ${ZOOKEEPER_TICK_TIME}
     ports:
-      - 22181:2181
+      - 22181:${ZOOKEEPER_CLIENT_PORT}
     networks:
       - common-network
 
@@ -112,7 +112,7 @@ services:
       KC_LOG_CONSOLE_FORMAT: DEFAULT
       KC_LOG_CONSOLE_OUTPUT: stdout
     ports:
-      - 8080:8080
+      - ${KEYCLOAK_PORT}:${KEYCLOAK_PORT}
     depends_on:
       - db
     networks:
