@@ -85,9 +85,9 @@ services:
         - postgres:/var/lib/postgresql/data
 
   db:
-    image: postgres:13.5
+    image: postgres:latest
     environment:
-      POSTGRES_HOST_AUTH_METHOD: trust
+#      POSTGRES_HOST_AUTH_METHOD: trust
       POSTGRES_USER: my_admin
       POSTGRES_PASSWORD: my_password
       POSTGRES_DB: keycloak_db
@@ -95,26 +95,38 @@ services:
       - 5432:5432
     networks:
       - common-network
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
   kc:
-    image: quay.io/keycloak/keycloak:legacy
+    image: quay.io/keycloak/keycloak:21.1.1
+    command: ["start-dev", "--import-realm", "--db=postgres", "--db-url=jdbc:postgresql://db:5432/keycloak_db", "--db-username=my_admin", "--db-password=my_password"]
     environment:
-      DB_VENDOR: POSTGRES
-      DB_ADDR: db
-      DB_DATABASE: keycloak_db
-      DB_USER: my_admin
-      DB_SCHEMA: public
-      DB_PASSWORD: my_password
+#      DB_VENDOR: POSTGRES
+##      DB_ADDR: db
+#      KC_DB_DATABASE: keycloak_db
+#      KC_DB: postgres
+#      KC_DB_USERNAME: my_admin
+#      KC_DB_URL: "jdbc:postgresql://db:5432/keycloak_db"
+#      KC_DB_SCHEMA: public
+#      KC_DB_PASSWORD: my_password
+
+
       KEYCLOAK_HOSTNAME: backend-keycloak-auth
-      KEYCLOAK_USER: admin
-      KEYCLOAK_PASSWORD: admin
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
+#      KEYCLOAK_USER: admin
+#      KEYCLOAK_PASSWORD: admin
       KC_LOG_LEVEL: debug
       KC_LOG_CONSOLE_COLOR: true
       KC_LOG_CONSOLE_FORMAT: DEFAULT
       KC_LOG_CONSOLE_OUTPUT: stdout
+      KC_IMPORT: /opt/keycloak/data/import/realm-export.json
     ports:
       - ${KEYCLOAK_PORT}:${KEYCLOAK_PORT}
     depends_on:
       - db
+    volumes:
+      - ./data/import:/opt/keycloak/data/import
     networks:
       - common-network
   backend-gateway-client:
@@ -142,6 +154,7 @@ services:
 
 volumes:
   postgres:
+  postgres_data:
 
 networks:
   common-network:
