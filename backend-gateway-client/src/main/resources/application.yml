@@ -31,8 +31,8 @@ spring:
             scope: openid, message.read
         provider:
           my-provider:
-            issuer-uri: http://backend-keycloak-auth:8080/auth/realms/my_realm
-
+#           issuer-uri: http://backend-keycloak-auth:8080/auth/realms/my_realm
+            issuer-uri: http://backend-keycloak-auth:8080/realms/my_realm
 logging:
   level:
     org:
