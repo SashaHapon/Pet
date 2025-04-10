@@ -680,7 +680,7 @@
       "enabled": true,
       "alwaysDisplayInConsole": true,
       "clientAuthenticatorType": "client-secret",
-      "secret": "**********",
+      "secret": "g05dxMh7hGHwzny9hi0dScuM3hCKWgVZ",
       "redirectUris": [
         "http://backend-gateway-client:8083/login/oauth2/code/gateway",
         "http://backend-gateway-client:8083/authorized"
